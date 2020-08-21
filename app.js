@@ -19,6 +19,7 @@ let SPEEDLIMIT = 5;
 let FRICTION = 0;
 let BOUNCE = 0.8;
 let mouseX = 0, mouseY = 0;
+let successClicks = 0;
 let clicks = 0;
 
 let init = () => {
@@ -46,15 +47,18 @@ let init = () => {
 
 let click = (evt) => {
     for (point of points) {
-        mx = evt.clientX - canvas.getBoundingClientRect().left;
-        my = evt.clientY - canvas.getBoundingClientRect().top;
-        r = Math.sqrt((mx - point.x) * (mx - point.x) + (my - point.y) * (my - point.y));
-        if (r <= CLICKRADIUS) {
-            point.clicked = true;
+        if (!point.clicked) {
+            mx = evt.clientX - canvas.getBoundingClientRect().left;
+            my = evt.clientY - canvas.getBoundingClientRect().top;
+            r = Math.sqrt((mx - point.x) * (mx - point.x) + (my - point.y) * (my - point.y));
+            if (r <= CLICKRADIUS) {
+                successClicks++;
+                point.clicked = true;
+            }
         }
     }
     clicks++;
-    console.log(clicks + " clicks");
+    document.getElementById('numclicks').innerHTML = successClicks + '/' + clicks;
 };
 
 let loop = () => {
